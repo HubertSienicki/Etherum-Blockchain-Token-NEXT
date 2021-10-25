@@ -12,7 +12,9 @@ contract NEXT_TOKEN {
          - Accept supply as a parameter of the function : DONE, TESTED
          - Keep track of the balance of each account : DONE, TESTED
          - Returning name and symbol of the contract : DONE, TESTED
-         - Transfer function to transfer the amount of tokens between accounts: 
+         - Transfer function to transfer the amount of tokens between accounts: DONE, TESTED
+         - Approval function to Approval the transfer on behalf of the sender : DONE, TESTED
+         - Delegated transfer function :
     */
 
     /* 
@@ -20,6 +22,16 @@ contract NEXT_TOKEN {
     returns: the total amount of coins in the contract (uint256)
     */
     uint256 public totalSupply;
+
+    /*
+    event variable Approval
+    returns: event triggered by Approval (event)
+    */
+    event Approval(
+        address indexed _owner,
+        address indexed _spender,
+        uint256 _value
+    );
 
     /*
     event variable Transfer
@@ -35,7 +47,13 @@ contract NEXT_TOKEN {
     public variable balanceOf
     returns: balance of the owner of the address (uint256)
     */
-    mapping(address => uint256) public balanceOf; 
+    mapping(address => uint256) public balanceOf;
+
+    /*
+    public variable allowance
+    returns: allowance of the owner of the address (uint256)
+    */ 
+    mapping(address => mapping(address => uint256)) public allowance;
 
     /*
     public variable name
@@ -80,6 +98,47 @@ contract NEXT_TOKEN {
         //return success (boolean)
         return true;
     }
+
+    /*
+    public function Approval
+    Approves the transaction (event) on behalf of the spender (address)
+    returns: success (boolean)
+    */
+    function approve(address _spender , uint256 _value) public returns (bool success) {
+        //Allowance
+        allowance[msg.sender][_spender] = _value;
+
+        //Approval event
+        emit Approval(msg.sender, _spender, _value);
+
+        return true;
+    }
+
+    /*
+    public function transferFrom
+    Takes care of the transfer (event) between two address (address)
+    returns: success (boolean)
+    */
+    function transferFrom(address _from , address _to, uint256 _value) public returns (bool success) {
+        //Require _from has enough tokenInstance
+        require(_value <= balanceOf[_from]);
+
+        //Require allowance is big enough
+        require(_value <= allowance[_from][msg.sender]);
+
+        //Call to the transfer event
+        emit Transfer(_from, _to, _value);
+        
+        //Changes the balance
+        balanceOf[_from] -= _value;
+        balanceOf[_to] += _value;
+
+        //Update the allowance
+        allowance[_from][msg.sender] -= _value;
+        
+        return true;
+    }
+
 
 
 }
