@@ -4,7 +4,7 @@
 pragma solidity ^0.8.9;
 
 
-contract NEXT_TOKEN {
+contract NEXT_Token {
     /*TODO: 
          - Constructor : DONE
          - Total number of tokens in the contract : DONE 
@@ -14,7 +14,7 @@ contract NEXT_TOKEN {
          - Returning name and symbol of the contract : DONE, TESTED
          - Transfer function to transfer the amount of tokens between accounts: DONE, TESTED
          - Approval function to Approval the transfer on behalf of the sender : DONE, TESTED
-         - Delegated transfer function :
+         - Delegated transfer function : DONE, TESTED
     */
 
     /* 
