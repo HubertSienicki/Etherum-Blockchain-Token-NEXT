@@ -7,11 +7,11 @@
         "test": "test"
     },
     "scripts": {
-        "dev" : "lite-server"
+        "dev": "lite-server"
     },
     "author": "Hubert",
-    "license" : "MIT",
+    "license": "MIT",
     "devDependencies": {
-        "lite-server" : "^2.6.1"
+        "lite-server": "^2.6.1"
     }
 }
