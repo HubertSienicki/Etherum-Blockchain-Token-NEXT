@@ -1,6 +1,6 @@
 //in charge of the behavior of the cryptocurrency
 //uses ERC-20 standard for smart contracts
-
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 

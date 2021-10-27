@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 import "./NEXTToken.sol";
@@ -9,6 +10,7 @@ contract NEXT_Token_Sale{
         - Token Price : DONE, TESTED
         - Buying tokens function: DONE, TESTED
         - Set up provision to tokenSale: DONE, TESTED
+        - Ending the tokenSale: 
     */
 
     /*
@@ -73,6 +75,19 @@ contract NEXT_Token_Sale{
 
         
         
+    }
+
+    function endSale() public{
+        // Require admin
+        require(msg.sender == admin);
+        
+        // Transfer the amount of tokens back to the admin
+        require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))));
+        
+        // Destroy contract
+        address payable temp = payable(admin);
+
+        temp.transfer(address(this).balance);
     }
 
 }

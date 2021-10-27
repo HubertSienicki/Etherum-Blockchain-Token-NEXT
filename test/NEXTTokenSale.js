@@ -61,4 +61,31 @@ contract('NEXT_Token_Sale', function (accounts) {
             assert(error.message.indexOf('revert') >= 0, 'cannot purchase more tokens than available');
         });
     });
+
+    it('ends token sale', function () {
+        return NEXTToken.deployed().then(function (instance) {
+            //Grab token instance
+            tokenInstance = instance;
+            return NEXTTokenSale.deployed()
+        }).then(function (instance) {
+            //Then token sale instance 
+            tokenSaleInstance = instance;
+            //endSale
+            return tokenSaleInstance.endSale({ from: buyer });
+        }).then(assert.fail).catch(function(error){
+            assert(error.message.indexOf('revert') >= 0, 'must be admin to endSale')
+            //End sale as admin
+            return tokenSaleInstance.endSale({ from: admin });
+        }).then(function(receipt){
+            return tokenInstance.balanceOf(admin);
+        }).then(function(balance){
+            assert.equal(balance.toNumber(), 999990, 'returns all unsold dapp tokens to admin')
+        }).then(function(balance){
+            //Return all unsold tokens to admin
+            const getBalance = async() => {
+                const balance = await web3.eth.getBalance(tokenSaleInstance.address);
+                assert.equal(balance.toNumber(), 0)
+            }
+        })
+    })
 })  
